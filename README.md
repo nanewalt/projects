@@ -1,6 +1,5 @@
 # projects
-misc projects:
-Jumble of side projects I've completed in my free time
+A collection of side projects I've completed in my free time
 
 Overview:
 
