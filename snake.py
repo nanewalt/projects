@@ -2,7 +2,7 @@ import pygame
 import random
 pygame.init()
 
-size = width, height = 500, 500
+size = width, height = 300, 300
 win = pygame.display.set_mode(size)
 pygame.display.set_caption('Snake')
 
@@ -19,9 +19,9 @@ font = pygame.font.Font('freesansbold.ttf', 12)
 def set_food():
 	global food
 	a,b = random.randint(0,len(game_board[0])-1), random.randint(0,len(game_board)-1)
-	while (a,b) in p.location:
+	while (b,a) in p.location:
 		a,b = random.randint(0,len(game_board[0])-1), random.randint(0,len(game_board)-1)
-	food = a,b
+	food = (b, a)
 
 def move():
 	keys = pygame.key.get_pressed()
@@ -80,10 +80,10 @@ def grow():
 def draw():
 	win.fill(background_color)
 	for r, c in p.location:
-		pygame.draw.rect(win, body_color, (c*cell_size, r*cell_size, 10, 10))
+		pygame.draw.rect(win, body_color, (c*cell_size, r*cell_size, cell_size, cell_size))
 	pygame.draw.rect(win, food_color, (food[0]*cell_size, food[1]*cell_size, cell_size, cell_size))
 	text = font.render('Size: ' + str(p.s), True, food_color, background_color)
-	win.blit(text, (450, 10))
+	win.blit(text, (width-50, 10))
 	pygame.display.update()
 
 class Player():
