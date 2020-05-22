@@ -7,4 +7,6 @@ Type_Racer.py -> Bot to compete on typeracer.com with automated game entry, text
   Can set custom words per minute (will only go up to ~280 to prevent disqualification and the website has a captcha test for
   any wpm >= 100) or turn on FULLSPEED to optimize speed (~430) but will be immediately disqualified for cheating.
   
-Snake -> Very simple snake game made in pygame. Will use as template for NEAT testing along with other projects.
+Snake.py -> Very simple snake game made in pygame. Will use as template for NEAT testing along with other projects.
+
+Pong.py -> Another very simple game made for NEAT using pygame
