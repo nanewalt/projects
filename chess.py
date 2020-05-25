@@ -232,6 +232,7 @@ def remove_invalid_moves(r, c, pos):
 				if game_board[m[0]][m[1]] == j:
 					pos.remove(p)
 					end = True
+					break
 			if end:
 				break
 		game_board[p[0]][p[1]] = v2
