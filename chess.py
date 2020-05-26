@@ -3,7 +3,7 @@ from itertools import cycle
 import math
 pygame.init()
 
-cell_size = 96
+cell_size = 64
 
 size = width, height = cell_size*8, cell_size*8
 screen = pygame.display.set_mode(size)
@@ -32,6 +32,8 @@ def initialize():
 	global game_board
 	global white_turn
 	global valid_positions
+	global prev_moves
+	global current_move
 	white_turn = True
 	game_board = [[0 for _ in range(8)] for _ in range(8)]
 	game_board[0] = [14, 12, 13, 15, 16, 13, 12, 14]
@@ -39,6 +41,8 @@ def initialize():
 	game_board[6] = [1, 1, 1, 1, 1, 1, 1, 1]
 	game_board[7] = [4, 2, 3, 5, 6, 3, 2, 4]
 	valid_positions = set()
+	prev_moves = []
+	current_move = -1
 
 def get_moves(r, c):
 	pos = set()
@@ -273,15 +277,36 @@ while run:
 	keys = pygame.key.get_pressed()
 	select = pygame.mouse.get_pressed()
 
-	if select[0]:
+	if keys[pygame.K_LEFT] and current_move > -1:
+		y, x, v1, r, c, v2 = prev_moves[current_move]
+		game_board[y][x] = v1
+		game_board[r][c] = v2
+		white_turn = not white_turn
+		current_move -= 1
+		draw_board()
+		pygame.time.delay(100)
+
+	elif keys[pygame.K_RIGHT] and current_move < len(prev_moves) - 1:
+		current_move += 1
+		y, x, v1, r, c, v2 = prev_moves[current_move]
+		game_board[y][x] = 0
+		game_board[r][c] = v1
+		white_turn = not white_turn
+		draw_board()
+		pygame.time.delay(100)
+
+	elif select[0]:
 		draw_board()
 		mouse_position = pygame.mouse.get_pos()
 		c = mouse_position[0] // cell_size
 		r = mouse_position[1] // cell_size
 		if (r, c) in valid_positions:
-			x, y = selected_piece
-			game_board[r][c] = game_board[x][y]
-			game_board[x][y] = 0
+			y, x = selected_piece
+			prev_moves = prev_moves[:current_move+1]
+			prev_moves.append((y, x, game_board[y][x], r, c, game_board[r][c]))
+			current_move += 1
+			game_board[r][c] = game_board[y][x]
+			game_board[y][x] = 0
 			valid_positions.clear()
 			white_turn = not white_turn
 			draw_board()
